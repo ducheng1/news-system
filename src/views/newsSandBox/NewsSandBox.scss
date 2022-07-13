@@ -3,4 +3,11 @@
     width: 100%;
     margin: 0;
     padding: 0;
+
+    .mainContent {
+        padding: 24px;
+        margin: 24px 16px;
+        background: #fff;
+        min-height: 280px;
+    }
 }
