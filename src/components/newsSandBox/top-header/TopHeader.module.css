@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; }
+  .container .leftContainer {
+    width: 4rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center; }
+  .container .rightContainer {
+    width: 12rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center; }
+    .container .rightContainer .avatar {
+      margin-right: 0.5rem; }
+
+/*# sourceMappingURL=TopHeader.module.css.map */
