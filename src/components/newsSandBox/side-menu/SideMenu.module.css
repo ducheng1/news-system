@@ -1,12 +1,15 @@
-.container .title {
-  height: 32px;
-  margin: 16px;
-  line-height: 32px;
-  color: whitesmoke;
-  font-size: 1.2rem;
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap; }
+.container {
+  overflow: auto;
+  flex: 1; }
+  .container .title {
+    height: 32px;
+    margin: 16px;
+    line-height: 32px;
+    color: whitesmoke;
+    font-size: 1.2rem;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
 
 /*# sourceMappingURL=SideMenu.module.css.map */

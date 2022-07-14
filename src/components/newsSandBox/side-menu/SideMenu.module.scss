@@ -1,4 +1,6 @@
 .container{
+    overflow: auto;
+    flex: 1;
 
     .title {
         height: 32px;
