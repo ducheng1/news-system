@@ -12,7 +12,7 @@
     width: 12rem;
     display: flex;
     flex-direction: row;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center; }
     .container .rightContainer .avatar {
       margin-right: 0.5rem; }

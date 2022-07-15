@@ -3,7 +3,7 @@ import {withRouter} from "react-router-dom";
 import axios from "axios";
 
 import {Layout, Menu} from "antd";
-import style from "../side-menu/SideMenu.module.scss";
+import style from "./SideMenu.module.scss";
 import {
     FormOutlined,
     HomeOutlined,
@@ -18,15 +18,14 @@ const {Sider} = Layout;
 function SideMenu(props) {
     let collapsed = false;
     const [menu, setMenu] = useState([]);
-
-    const iconList = {
+    const [iconList] = useState({
         "/home": <HomeOutlined/>,
         "/user-manage": <UserOutlined/>,
         "/right-manage": <FormOutlined/>,
         "/news-manage": <InfoCircleOutlined/>,
         "/audit-manage": <AuditOutlined/>,
         "/publish-manage": <BarChartOutlined/>
-    }
+    })
 
     useEffect(() => {
         axios.get("http://localhost:5050/rights?_embed=children").then(res => {
@@ -46,13 +45,13 @@ function SideMenu(props) {
                 // 移除无pagepermission权限节点
                 if (item.children !== undefined) {
                     for (let i = 0; i < item.children.length; i++) {
-                        if (item.children[i].pagepermission === undefined) {
+                        if (item.children[i].pagepermission === undefined || item.children[i].pagepermission === 0) {
                             delete item.children[i]
                         }
                     }
                 }
-
             });
+            data = data.filter(item => item.pagepermission !== 0);
             setMenu(data);
         })
     }, []);
@@ -61,8 +60,11 @@ function SideMenu(props) {
         <Sider className={style.container} width={"15rem"} collapsible collapsed={collapsed} theme="dark"
                trigger={null}>
             <div className={style.title}>全球新闻发布管理系统</div>
-            <Menu theme="dark" defaultSelectedKeys={[props.location.pathname]} defaultOpenKeys={["/"+props.location.pathname.split("/")[1]]}
-                  mode="inline" inlineCollapsed={collapsed} items={menu} onClick={(e) => {props.history.push(e.key)}}/>
+            <Menu theme="dark" defaultSelectedKeys={[props.location.pathname]}
+                  defaultOpenKeys={["/" + props.location.pathname.split("/")[1]]}
+                  mode="inline" items={menu} onClick={(e) => {
+                props.history.push(e.key)
+            }}/>
         </Sider>
     )
 }

@@ -42,7 +42,7 @@ export default function TopHeader() {
         ]}/>
     )
     return (
-        <Header style={{background: "#ffffff", padding: "0 30px",}} className={style.container}>
+        <Header style={{background: "#ffffff", padding: "0 30px",}} className={style.container} data-collapsed={collapsed}>
             <div className={style.leftContainer}>
                 {
                     collapsed ? <MenuUnfoldOutlined onClick={changeCollapsed}/> :
@@ -53,7 +53,7 @@ export default function TopHeader() {
             <div className={style.rightContainer}>
                 <Avatar className={style.avatar} icon={<UserOutlined/>}/>
                 <Dropdown overlay={menu}>
-                    <Space>欢迎admin回来<DownOutlined/></Space>
+                    <Space>欢迎<span style={{color: "cadetblue"}}>admin</span>回来<DownOutlined/></Space>
                 </Dropdown>
             </div>
         </Header>
