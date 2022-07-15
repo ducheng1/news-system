@@ -59,7 +59,8 @@ function SideMenu(props) {
             });
             setMenu(data);
         })
-    });
+        // console.log(111)
+    }, []);
 
     return (
         <Sider className={style.container} width={"15rem"} collapsible collapsed={collapsed} theme="dark"
