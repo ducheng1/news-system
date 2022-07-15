@@ -7,11 +7,9 @@ const {confirm} = Modal;
 
 export default function RightList() {
     const [dataSource, setDataSource] = useState([]);
-    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
-        axios.get("http://localhost:5050/rights?_embed=children").then(res => {
+        axios.get("rights?_embed=children").then(res => {
             let data = res.data;
             data.forEach(item => {
                 // 移除空children节点
@@ -20,7 +18,6 @@ export default function RightList() {
                 }
             });
             setDataSource(data);
-            setLoading(false);
         })
     }, []);
 
@@ -42,7 +39,7 @@ export default function RightList() {
         // console.log(item);
         if (item.grade === 1) {
             setDataSource(dataSource.filter(data => data.id !== item.id));
-            axios.delete(`http://localhost:5050/rights/${item.id}`).then(() => {
+            axios.delete(`rights/${item.id}`).then(() => {
             });
         } else {
             // console.log(item.rightId);
@@ -50,7 +47,7 @@ export default function RightList() {
             list[0].children = list[0].children.filter(data => data.id !== item.id);
             // console.log(list[0].children);
             setDataSource([...dataSource]);
-            axios.delete(`http://localhost:5050/children/${item.id}`).then(() => {
+            axios.delete(`children/${item.id}`).then(() => {
             });
         }
         // window.location.reload();
@@ -61,12 +58,12 @@ export default function RightList() {
         item.pagepermission = item.pagepermission === 1 ? 0 : 1;
         setDataSource([...dataSource]);
         if (item.grade === 1) {
-            axios.patch(`http://localhost:5050/rights/${item.id}`, {
+            axios.patch(`rights/${item.id}`, {
                 pagepermission: item.pagepermission
             }).then(() => {
             });
         } else {
-            axios.patch(`http://localhost:5050/children/${item.id}`, {
+            axios.patch(`children/${item.id}`, {
                 pagepermission: item.pagepermission
             }).then(() => {
             });
@@ -118,7 +115,7 @@ export default function RightList() {
 
     return (
         <div>
-            <Table dataSource={dataSource} columns={columns} loading={loading} pagination={{pageSize: 5}}/>
+            <Table dataSource={dataSource} columns={columns} pagination={{pageSize: 5}}/>
         </div>
     )
 }

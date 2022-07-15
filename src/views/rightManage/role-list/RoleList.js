@@ -10,7 +10,6 @@ export default function RoleList() {
     const [rightList, setRightList] = useState([]);
     const [currentRights, setCurrentRights] = useState([]);
     const [currentId, setCurrentId] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const confirmHandler = (item) => {
@@ -30,7 +29,7 @@ export default function RoleList() {
     const deleteHandler = (item) => {
         // console.log(item);
         setDataSource(dataSource.filter(data => data.id !== item.id));
-        axios.delete(`http://localhost:5050/roles/${item.id}`);
+        axios.delete(`roles/${item.id}`);
         // window.location.reload();
     }
 
@@ -66,22 +65,18 @@ export default function RoleList() {
         }
     ];
     useEffect(() => {
-        setIsLoading(true);
-        axios.get("http://localhost:5050/roles").then(res => {
+        axios.get("roles").then(res => {
             // console.log(res.data);
             let data = res.data;
             setDataSource(data);
-            setIsLoading(false);
         })
     }, []);
 
     useEffect(() => {
-        setIsLoading(true);
-        axios.get("http://localhost:5050/rights?_embed=children").then(res => {
+        axios.get("rights?_embed=children").then(res => {
             // console.log(res.data);
             let data = res.data;
             setRightList(data);
-            setIsLoading(false);
         })
     }, []);
 
@@ -98,7 +93,7 @@ export default function RoleList() {
             }
             return item;
         }));
-        axios.patch(`http://localhost:5050/roles/${currentId}`, {
+        axios.patch(`roles/${currentId}`, {
             rights: currentRights
         }).then(() => {
         });
@@ -115,9 +110,9 @@ export default function RoleList() {
 
     return (
         <div>
-            <Table dataSource={dataSource} columns={columns} rowKey={(item) => item.id} loading={isLoading}/>
+            <Table dataSource={dataSource} columns={columns} rowKey={(item) => item.id}/>
             <Modal title={"权限分配"} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                <Tree treeData={rightList} checkable checkedKeys={currentRights} loading={isLoading}
+                <Tree treeData={rightList} checkable checkedKeys={currentRights}
                       onCheck={onCheck} checkStrictly showLine={{showLeafIcon: false}}/>
             </Modal>
         </div>

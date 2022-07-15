@@ -22,7 +22,7 @@ const UserForm = forwardRef((props, ref) => {
             }, [props.isUpdateDisabled, props.isUpdate]);
 
             const checkRegionDisabled = (item) => {
-                if (props.isUpdate) {
+                if (isUpdate) {
                     if (roleObj[roleId] === "superadmin") {
                         return false;
                     } else {
@@ -38,7 +38,7 @@ const UserForm = forwardRef((props, ref) => {
             }
 
             const checkRoleDisabled = (item) => {
-                if (props.isUpdate) {
+                if (isUpdate) {
                     if (roleObj[roleId] === "superadmin") {
                         return false;
                     } else {

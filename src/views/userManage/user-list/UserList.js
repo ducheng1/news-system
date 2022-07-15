@@ -8,7 +8,6 @@ const {confirm} = Modal;
 
 export default function UserList() {
     const [dataSource, setDataSource] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
     const [isAddVisible, setIsAddVisible] = useState(false);
     const [roleList, setRoleList] = useState([]);
     const [regionList, setRegionList] = useState([]);
@@ -19,12 +18,6 @@ export default function UserList() {
     const [currentUpdate, setCurrentUpdate] = useState(null);
 
     const {username, roleId, region} = JSON.parse(localStorage.getItem("token"));
-
-    const roleObj = {
-        "1": "superadmin",
-        "2": "admin",
-        "3": "editor"
-    };
 
     const columns = [
         {
@@ -96,7 +89,7 @@ export default function UserList() {
         // console.log(item);
         item.roleState = !item.roleState;
         setDataSource([...dataSource]);
-        axios.patch(`http://localhost:5050/users/${item.id}`, {
+        axios.patch(`users/${item.id}`, {
             roleState: item.roleState,
         })
     }
@@ -118,7 +111,7 @@ export default function UserList() {
     const deleteHandler = (item) => {
         // console.log(item);
         setDataSource(dataSource.filter(data => data.id !== item.id));
-        axios.delete(`http://localhost:5050/users/${item.id}`);
+        axios.delete(`users/${item.id}`);
     }
 
     const updateHandler = (item) => {
@@ -135,32 +128,31 @@ export default function UserList() {
     }
 
     useEffect(() => {
-        setIsLoading(true);
-        axios.get("http://localhost:5050/users?_expand=role").then(res => {
+        const roleObj = {
+            "1": "superadmin",
+            "2": "admin",
+            "3": "editor"
+        }
+        axios.get("users?_expand=role").then(res => {
             const data = res.data;
             setDataSource(roleObj[roleId] === "superadmin" ? data : [
                 ...data.filter(item => item.username === username),
                 ...data.filter(item => item.region === region && roleObj[item.roleId] === "editor")
             ])
-            setIsLoading(false);
         })
-    }, []);
+    }, [region, roleId, username]);
 
     useEffect(() => {
-        setIsLoading(true);
-        axios.get("http://localhost:5050/roles").then(res => {
+        axios.get("roles").then(res => {
             const data = res.data;
             setRoleList(data);
-            setIsLoading(false);
         })
     }, []);
 
     useEffect(() => {
-        setIsLoading(true);
-        axios.get("http://localhost:5050/regions").then(res => {
+        axios.get("regions").then(res => {
             const data = res.data;
             setRegionList(data);
-            setIsLoading(false);
         })
     }, []);
 
@@ -170,7 +162,7 @@ export default function UserList() {
             // console.log(res);
             setIsAddVisible(false);
             addForm.current.resetFields();
-            axios.post(`http://localhost:5050/users`, {
+            axios.post(`users`, {
                 ...e,
                 "roleState": true,
                 "default": false
@@ -200,7 +192,7 @@ export default function UserList() {
                 }
                 return item;
             }));
-            axios.patch(`http://localhost:5050/users/${currentUpdate.id}`, value).then(() => {
+            axios.patch(`users/${currentUpdate.id}`, value).then(() => {
 
             });
         })
@@ -212,7 +204,7 @@ export default function UserList() {
                 setIsAddVisible(true)
             }
             }>添加用户</Button>
-            <Table dataSource={dataSource} columns={columns} loading={isLoading} pagination={{pageSize: 5}}
+            <Table dataSource={dataSource} columns={columns} pagination={{pageSize: 5}}
                    rowKey={(item) => item.id}/>
             <Modal visible={isAddVisible} title={"添加用户"} okText={"确定"} cancelText={"取消"} onCancel={() => {
                 setIsAddVisible(false);

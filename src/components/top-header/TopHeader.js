@@ -50,6 +50,7 @@ function TopHeader(props) {
                         setTimeout(() => {
                             props.history.replace("/login");
                         }, 2000);
+                        window.location.reload();
                     }}>退出</Button>
                 ),
             },

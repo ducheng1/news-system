@@ -1,4 +1,4 @@
-import './App.scss';
+import './App.css';
 import IndexRouter from "./router/indexRouter";
 import 'antd/dist/antd.css';
 

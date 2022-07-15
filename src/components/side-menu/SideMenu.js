@@ -34,7 +34,7 @@ function SideMenu(props) {
     }
 
     useEffect(() => {
-        axios.get("http://localhost:5050/rights?_embed=children").then(res => {
+        axios.get("rights?_embed=children").then(res => {
             // console.log(res.data);
             let data = res.data;
             let new_data = JSON.stringify(data);
@@ -59,7 +59,7 @@ function SideMenu(props) {
             });
             setMenu(data);
         })
-    }, []);
+    });
 
     return (
         <Sider className={style.container} width={"15rem"} collapsible collapsed={collapsed} theme="dark"
