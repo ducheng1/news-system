@@ -27,6 +27,12 @@ function SideMenu(props) {
         "/publish-manage": <BarChartOutlined/>
     })
 
+    const {role: {rights}} = JSON.parse(localStorage.getItem("token"));
+
+    const checkPagePermission = (item) => {
+        return item.pagepermission && rights.includes(item.key);
+    }
+
     useEffect(() => {
         axios.get("http://localhost:5050/rights?_embed=children").then(res => {
             // console.log(res.data);
@@ -45,13 +51,12 @@ function SideMenu(props) {
                 // 移除无pagepermission权限节点
                 if (item.children !== undefined) {
                     for (let i = 0; i < item.children.length; i++) {
-                        if (item.children[i].pagepermission === undefined || item.children[i].pagepermission === 0) {
+                        if (item.children[i].pagepermission === undefined || item.children[i].pagepermission === 0 || checkPagePermission(item.children[i]) === false) {
                             delete item.children[i]
                         }
                     }
                 }
             });
-            data = data.filter(item => item.pagepermission !== 0);
             setMenu(data);
         })
     }, []);

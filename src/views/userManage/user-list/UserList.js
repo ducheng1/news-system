@@ -18,6 +18,14 @@ export default function UserList() {
     const [isUpdateDisabled, setIsUpdateDisabled] = useState(false);
     const [currentUpdate, setCurrentUpdate] = useState(null);
 
+    const {username, roleId, region} = JSON.parse(localStorage.getItem("token"));
+
+    const roleObj = {
+        "1": "superadmin",
+        "2": "admin",
+        "3": "editor"
+    };
+
     const columns = [
         {
             title: "区域",
@@ -130,7 +138,10 @@ export default function UserList() {
         setIsLoading(true);
         axios.get("http://localhost:5050/users?_expand=role").then(res => {
             const data = res.data;
-            setDataSource(data);
+            setDataSource(roleObj[roleId] === "superadmin" ? data : [
+                ...data.filter(item => item.username === username),
+                ...data.filter(item => item.region === region && roleObj[item.roleId] === "editor")
+            ])
             setIsLoading(false);
         })
     }, []);
@@ -206,13 +217,13 @@ export default function UserList() {
             <Modal visible={isAddVisible} title={"添加用户"} okText={"确定"} cancelText={"取消"} onCancel={() => {
                 setIsAddVisible(false);
             }} onOk={() => addFormOk()}>
-                <UserForm regionList={regionList} roleList={roleList} ref={addForm}/>
+                <UserForm regionList={regionList} roleList={roleList} ref={addForm} isUpdate={false}/>
             </Modal>
             <Modal visible={isUpdateVisible} title={"更新用户"} okText={"更新"} cancelText={"取消"} onCancel={() => {
                 setIsUpdateVisible(false);
                 setIsUpdateDisabled(!isUpdateDisabled);
             }} onOk={() => updateFormOk()}>
-                <UserForm regionList={regionList} roleList={roleList} ref={updateForm}
+                <UserForm regionList={regionList} roleList={roleList} ref={updateForm} isUpdate={true}
                           isUpdateDisabled={isUpdateDisabled}/>
             </Modal>
         </div>

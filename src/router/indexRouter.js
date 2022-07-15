@@ -8,10 +8,10 @@ export default function IndexRouter() {
         <HashRouter>
             <Switch>
                 <Route path="/login" component={Login}/>
-                {/*<Route path="/" render={() =>*/}
-                {/*    localStorage.getItem("token") ? <NewsSandBox/> : <Redirect to="/login"/>*/}
-                {/*}/>*/}
-                <Route path="/" component={NewsSandBox}/>
+                <Route path="/" render={() =>
+                    localStorage.getItem("token") ? <NewsSandBox/> : <Redirect to="/login"/>
+                }/>
+                {/*<Route path="/" component={NewsSandBox}/>*/}
             </Switch>
         </HashRouter>
     )

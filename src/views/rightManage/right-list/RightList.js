@@ -102,13 +102,14 @@ export default function RightList() {
             render: (item) => {
                 return <div>
                     <Button shape={"circle"} danger icon={<DeleteOutlined/>} style={{marginRight: "10px"}}
-                            onClick={() => confirmHandler(item)}/>
+                            onClick={() => confirmHandler(item)}
+                            disabled={item.pagepermission === undefined || item.title === "首页"}/>
                     <Popover content={<Switch checked={item.pagepermission} checkedChildren={"开启"}
                                               unCheckedChildren={"关闭"} onChange={() => editHandler(item)}/>}
                              title="开启页面"
-                             trigger={item.pagepermission === undefined ? '' : 'click'}>
+                             trigger={item.pagepermission === undefined || item.title === "首页" ? '' : 'click'}>
                         <Button shape={"circle"} type={"primary"} ghost icon={<EditOutlined/>}
-                                disabled={item.pagepermission === undefined}/>
+                                disabled={item.pagepermission === undefined || item.title === "首页"}/>
                     </Popover>
                 </div>
             }
