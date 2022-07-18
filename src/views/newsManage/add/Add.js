@@ -19,7 +19,7 @@ function Add(props) {
                 // console.log(res);
                 axios.get(`categories?title=${res.categoryId}`).then(e => {
                     res.categoryId = e.data[0].id;
-                    // console.log(typeof res.id)
+                    // console.log(res.categoryId)
                     setFormInfo(res);
                 });
                 setCurrentStep(currentStep + 1);

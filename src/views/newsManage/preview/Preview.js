@@ -17,6 +17,7 @@ function Preview(props) {
 
     const auditState = ["未审核", "审核中", "已通过", "未通过"];
     const publishState = ["未发布", "待发布", "已上线", "已下线"];
+    const colorList = ["black", "orange", "green", "red"];
 
     return (
         <div>
@@ -37,12 +38,12 @@ function Preview(props) {
                             </Descriptions.Item>
                             <Descriptions.Item label="区域">{newsInfo.region}</Descriptions.Item>
                             <Descriptions.Item label="审核状态">
-                            <span style={{color: "red"}}>
+                            <span style={{color: colorList[newsInfo.auditState]}}>
                                 {auditState[newsInfo.auditState]}
                             </span>
                             </Descriptions.Item>
                             <Descriptions.Item label="发布状态">
-                            <span style={{color: "red"}}>
+                            <span style={{color: colorList[newsInfo.publishState]}}>
                                 {publishState[newsInfo.publishState]}
                             </span>
                             </Descriptions.Item>

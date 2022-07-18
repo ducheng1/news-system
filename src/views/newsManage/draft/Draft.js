@@ -7,7 +7,6 @@ const {confirm} = Modal;
 
 function Draft(props) {
     const [dataSource, setDataSource] = useState([]);
-    const [isUpdateVisible, setIsUpdateVisible] = useState(false);
 
     const {username} = JSON.parse(localStorage.getItem("token"));
     useEffect(() => {
@@ -22,7 +21,7 @@ function Draft(props) {
             // console.log(data);
             data.forEach(item => {
                 if (item.categoryId !== undefined)
-                    item.categoryId = categoryObj[item.categoryId].title;
+                    item.categoryId = categoryObj[item.categoryId - 1].title;
             });
             setDataSource(data);
         })
@@ -50,15 +49,6 @@ function Draft(props) {
         {
             title: "分类",
             dataIndex: "categoryId",
-            // render: (item) => {
-            //     console.log(item)
-            //     let category = "";
-            //     axios.get(`categories?id=${1}`).then(res => {
-            //         console.log(res.data[0].title);
-            //         category = res.data[0].title;
-            //     });
-            //     return {category};
-            // }
         },
         {
             title: "操作",
@@ -106,7 +96,8 @@ function Draft(props) {
             auditState: 1
         }).then(res => {
             notification.success({
-                message: "已提交至审核列表"
+                message: "通知",
+                description: "已提交至审核列表"
             });
             props.history.push("/audit-manage/list");
         })
