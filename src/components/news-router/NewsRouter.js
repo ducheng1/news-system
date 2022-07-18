@@ -15,6 +15,8 @@ import AuditList from "../../views/auditManage/list/AuditList";
 import Add from "../../views/newsManage/add/Add";
 import Draft from "../../views/newsManage/draft/Draft";
 import Category from "../../views/newsManage/category/Category";
+import Preview from "../../views/newsManage/preview/Preview";
+import Update from "../../views/newsManage/update/Update";
 
 const LocalRouterMap = {
     // 首页
@@ -28,6 +30,8 @@ const LocalRouterMap = {
     "/news-manage/add": Add,
     "/news-manage/draft": Draft,
     "/news-manage/category": Category,
+    "/news-manage/preview/:id": Preview,
+    "/news-manage/update/:id": Update,
     // 审核管理
     "/audit-manage/audit": Audit,
     "/audit-manage/list": AuditList,
@@ -52,7 +56,7 @@ function NewsRouter() {
     }, []);
 
     const checkRoute = (item) => {
-        return LocalRouterMap[item.key] && item.pagepermission === 1;
+        return LocalRouterMap[item.key] && (item.pagepermission || item.routepermisson);
     }
 
     const {role: {rights}} = JSON.parse(localStorage.getItem("token"));

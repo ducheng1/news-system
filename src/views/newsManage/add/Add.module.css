@@ -1,0 +1,14 @@
+.btnGroup {
+  margin-top: 2rem;
+  display: flex;
+  width: 20rem; }
+
+.formGroup {
+  margin-top: 2rem; }
+  .formGroup .firstStep {
+    width: 75%; }
+
+.hidden {
+  display: none; }
+
+/*# sourceMappingURL=Update.module.css.map */

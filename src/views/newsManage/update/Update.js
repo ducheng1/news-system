@@ -1,17 +1,36 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Form, Input, message, notification, PageHeader, Select, Steps} from "antd";
 
-import style from "./Add.module.scss";
+import style from "./Update.module.scss";
 import axios from "axios";
 import NewsEditor from "../../../components/news-editor/NewsEditor";
 
-function Add(props) {
+function Update(props) {
     const [currentStep, setCurrentStep] = useState(0);
     const [options, setOptions] = useState(null);
     const [formInfo, setFormInfo] = useState(null);
     const [content, setContent] = useState("");
     const firstStep = useRef(null);
     const user = JSON.parse(localStorage.getItem("token"));
+    const [newsInfo, setNewsInfo] = useState(null);
+
+    useEffect(() => {
+        let categoryObj = {};
+        axios.get("categories").then(res => {
+            // console.log(res.data);
+            categoryObj = res.data;
+        })
+        axios.get(`/news/${props.match.params.id}?_expand=category&_expand=role`).then(res => {
+            // console.log(res.data);
+            // setNewsInfo(res.data);
+            let {title, categoryId, content} = res.data;
+            firstStep.current.setFieldsValue({
+                title,
+                categoryId: categoryObj[categoryId],
+            });
+            setContent(content);
+        });
+    }, [props.match.params.id]);
 
     const nextHandler = () => {
         if (currentStep === 0) {
@@ -57,18 +76,10 @@ function Add(props) {
     const saveHandler = () => {
         // console.log("存到草稿");
         // console.log(formInfo, content);
-        axios.post("/news", {
+        axios.patch(`/news/${props.match.params.id}`, {
             ...formInfo,
             "content": content,
-            "region": user.region ? user.region : "全球",
-            "author": user.username,
-            "roleId": user.roleId,
             "auditState": 0,
-            "publishState": 0,
-            "star": 0,
-            "view": 0,
-            "createTime": Date.now(),
-            "publishTime": 0
         }).then(res => {
             notification.info({
                 message: "通知",
@@ -82,18 +93,10 @@ function Add(props) {
     const auditHandler = () => {
         // console.log("提交审核");
         // console.log(formInfo, content);
-        axios.post("/news", {
+        axios.patch(`/news/${props.match.params.id}`, {
             ...formInfo,
             "content": content,
-            "region": user.region ? user.region : "全球",
-            "author": user.username,
-            "roleId": user.roleId,
             "auditState": 1,
-            "publishState": 0,
-            "star": 0,
-            "view": 0,
-            "createTime": Date.now(),
-            "publishTime": 0
         }).then(res => {
             notification.info({
                 message: "通知",
@@ -105,7 +108,7 @@ function Add(props) {
 
     return (
         <div>
-            <PageHeader title={"撰写新闻"} subTitle="输入您的内容"/>
+            <PageHeader title={"更新新闻"} subTitle="新闻更新" onBack={() => props.history.goBack()}/>
             <Steps current={currentStep}>
                 <Steps.Step title={"基本信息"} description={"新闻标题，新闻分类"}/>
                 <Steps.Step title={"新闻内容"} description={"新闻主体内容"}/>
@@ -129,7 +132,7 @@ function Add(props) {
                     </Form>
                 </div>
                 <div className={currentStep === 1 ? style.secondStep : style.hidden}>
-                    <NewsEditor getContent={(content) => setContent(content)}/>
+                    <NewsEditor getContent={(content) => setContent(content)} content={content}/>
                 </div>
                 <div className={currentStep === 2 ? style.thirdStep : style.hidden}>
 
@@ -156,4 +159,4 @@ function Add(props) {
     );
 }
 
-export default Add;
+export default Update;
