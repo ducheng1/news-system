@@ -45,12 +45,13 @@ function Update(props) {
                 // console.log(formInfo);
             }).catch(err => {
                 // console.log(err);
-            })
+            });
         } else if (currentStep === 1) {
             if (content === "" || content.trim() === "<p></p>") {
                 message.error("新闻内容不能为空");
                 return;
             }
+            setContent(content)
             // console.log(content);
             setCurrentStep(currentStep + 1);
         }
@@ -75,7 +76,7 @@ function Update(props) {
     // 事件处理--保存草稿
     const saveHandler = () => {
         // console.log("存到草稿");
-        // console.log(formInfo, content);
+        console.log(formInfo, content);
         axios.patch(`/news/${props.match.params.id}`, {
             ...formInfo,
             "content": content,
