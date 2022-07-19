@@ -591,11 +591,11 @@
       "author": "admin",
       "roleId": 1,
       "auditState": 2,
-      "publishState": 1,
+      "publishState": 2,
       "star": 0,
       "view": 0,
       "createTime": 1658127293060,
-      "publishTime": 0,
+      "publishTime": 1658221040893,
       "id": 16
     },
     {
@@ -650,12 +650,12 @@
       "region": "全球",
       "author": "admin",
       "roleId": 1,
-      "auditState": 1,
-      "publishState": 0,
+      "auditState": 2,
+      "publishState": 2,
       "star": 0,
       "view": 0,
       "createTime": 1658197001020,
-      "publishTime": 0,
+      "publishTime": 1658222518851,
       "id": 22
     }
   ]

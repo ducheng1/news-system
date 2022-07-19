@@ -17,6 +17,8 @@ import Draft from "../../views/newsManage/draft/Draft";
 import Category from "../../views/newsManage/category/Category";
 import Preview from "../../views/newsManage/preview/Preview";
 import Update from "../../views/newsManage/update/Update";
+import {Spin} from "antd";
+import {connect} from "react-redux";
 
 const LocalRouterMap = {
     // 首页
@@ -41,7 +43,7 @@ const LocalRouterMap = {
     "/publish-manage/sunset": Sunset
 }
 
-function NewsRouter() {
+function NewsRouter(props) {
     const [backRouteList, setBackRouteList] = useState([]);
 
     useEffect(() => {
@@ -66,12 +68,13 @@ function NewsRouter() {
     }
 
     return (
-        <div>
+        <Spin size={"large"} spinning={props.isLoading}>
             <Switch>
                 {
                     backRouteList.map(item => {
                             if (checkRoute(item) && checkUserPermission(item)) {
-                                return <Route path={item.key} key={item.key} component={LocalRouterMap[item.key]} exact/>;
+                                return <Route path={item.key} key={item.key} component={LocalRouterMap[item.key]}
+                                              exact/>;
                             }
                             return null;
                         }
@@ -82,8 +85,12 @@ function NewsRouter() {
                     backRouteList.length > 0 && <Route path="*" component={NoPermission}/>
                 }
             </Switch>
-        </div>
+        </Spin>
     );
 }
 
-export default NewsRouter;
+const mapToStateProps = ({LoadingReducer: {isLoading}}) => ({
+    isLoading
+})
+
+export default connect(mapToStateProps)(NewsRouter);

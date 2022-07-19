@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {withRouter} from "react-router-dom";
 import axios from "axios";
+import {connect} from "react-redux";
 
 import {Layout, Menu} from "antd";
 import style from "./SideMenu.module.scss";
@@ -16,7 +17,6 @@ import {
 const {Sider} = Layout;
 
 function SideMenu(props) {
-    let collapsed = false;
     const [menu, setMenu] = useState([]);
     const [iconList] = useState({
         "/home": <HomeOutlined/>,
@@ -63,7 +63,7 @@ function SideMenu(props) {
     }, []);
 
     return (
-        <Sider className={style.container} width={"15rem"} collapsible collapsed={collapsed} theme="dark"
+        <Sider className={style.container} width={"15rem"} collapsible collapsed={props.isCollapsed} theme="dark"
                trigger={null}>
             <div className={style.title}>全球新闻发布管理系统</div>
             <Menu theme="dark" defaultSelectedKeys={[props.location.pathname]}
@@ -75,4 +75,8 @@ function SideMenu(props) {
     )
 }
 
-export default withRouter(SideMenu);
+const mapStateToProps = ({CollapsedReducer: {isCollapsed}}) => ({
+    isCollapsed
+})
+
+export default connect(mapStateToProps)(withRouter(SideMenu));

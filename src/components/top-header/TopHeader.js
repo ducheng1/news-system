@@ -1,31 +1,19 @@
-import React, {useState} from "react";
+import React from "react";
 import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
 // antd组件
-import {
-    Avatar,
-    Button,
-    Dropdown,
-    Layout,
-    Menu,
-    Space,
-    message
-} from "antd";
+import {Avatar, Button, Dropdown, Layout, Menu, message, Space} from "antd";
 // antd图标
-import {
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    DownOutlined,
-    UserOutlined
-} from "@ant-design/icons";
+import {DownOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined} from "@ant-design/icons";
 // css
 import style from "./TopHeader.module.scss";
 
 const {Header} = Layout;
 
 function TopHeader(props) {
-    const [collapsed, setCollapsed] = useState(false);
     const changeCollapsed = () => {
-        setCollapsed(!collapsed);
+        // console.log(props);
+        props.changeCollapsed();
     }
 
     const users = JSON.parse(localStorage.getItem("token"));
@@ -58,10 +46,10 @@ function TopHeader(props) {
     )
     return (
         <Header style={{background: "#ffffff", padding: "0 30px",}} className={style.container}
-                data-collapsed={collapsed}>
+                data-collapsed={props.isCollapsed}>
             <div className={style.leftContainer}>
                 {
-                    collapsed ? <MenuUnfoldOutlined onClick={changeCollapsed}/> :
+                    props.isCollapsed ? <MenuUnfoldOutlined onClick={changeCollapsed}/> :
                         <MenuFoldOutlined onClick={changeCollapsed}/>
                 }
                 <span>首页</span>
@@ -76,4 +64,16 @@ function TopHeader(props) {
     )
 }
 
-export default withRouter(TopHeader);
+const mapStateToProps = ({CollapsedReducer: {isCollapsed}}) => ({
+    isCollapsed
+})
+
+const mapDispatchToProps = {
+    changeCollapsed() {
+        return {
+            type: "change_collapsed"
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TopHeader));
