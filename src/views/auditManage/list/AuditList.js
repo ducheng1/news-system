@@ -17,8 +17,8 @@ function AuditList(props) {
             let data = res.data;
             // console.log(data);
             data.forEach(item => {
-                // console.log(categoryObj[item.categoryId]);
-                item.categoryId = categoryObj[item.categoryId - 1].title;
+                if (typeof item.categoryId === "number")
+                    item.categoryId = categoryObj[item.categoryId - 1].title;
             });
             setDataSource(data);
         })

@@ -22,7 +22,9 @@ function Audit(props) {
             const list = res.data;
             list.forEach(item => {
                 // console.log(categoryObj[item.categoryId]);
-                item.categoryId = categoryObj[item.categoryId - 1].title;
+                // item.categoryId = categoryObj[item.categoryId - 1].title;
+                if (typeof item.categoryId === "number")
+                    item.categoryId = categoryObj[item.categoryId - 1].title;
             });
             setDataSource(roleObj[roleId] === "superadmin" ? list : [
                 ...list.filter(item => item.author === username),
