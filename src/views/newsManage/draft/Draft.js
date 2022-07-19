@@ -20,7 +20,8 @@ function Draft(props) {
             let data = res.data;
             // console.log(data);
             data.forEach(item => {
-                if (item.categoryId !== undefined)
+                // console.log(item);
+                if (typeof item.categoryId === "number")
                     item.categoryId = categoryObj[item.categoryId - 1].title;
             });
             setDataSource(data);

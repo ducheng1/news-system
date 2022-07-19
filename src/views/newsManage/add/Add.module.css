@@ -1,9 +1,11 @@
 .btnGroup {
   margin-top: 2rem;
   display: flex;
-  width: 20rem; }
+  width: 20rem;
+  padding: 0 24px; }
 
 .formGroup {
+  padding: 0 24px;
   margin-top: 2rem; }
   .formGroup .firstStep {
     width: 75%; }
@@ -11,4 +13,4 @@
 .hidden {
   display: none; }
 
-/*# sourceMappingURL=Update.module.css.map */
+/*# sourceMappingURL=Add.module.css.map */

@@ -11,8 +11,6 @@ function Update(props) {
     const [formInfo, setFormInfo] = useState(null);
     const [content, setContent] = useState("");
     const firstStep = useRef(null);
-    const user = JSON.parse(localStorage.getItem("token"));
-    const [newsInfo, setNewsInfo] = useState(null);
 
     useEffect(() => {
         let categoryObj = {};
@@ -20,13 +18,14 @@ function Update(props) {
             // console.log(res.data);
             categoryObj = res.data;
         })
+        // console.log(categoryObj);
         axios.get(`/news/${props.match.params.id}?_expand=category&_expand=role`).then(res => {
             // console.log(res.data);
             // setNewsInfo(res.data);
             let {title, categoryId, content} = res.data;
             firstStep.current.setFieldsValue({
                 title,
-                categoryId: categoryObj[categoryId],
+                categoryId: categoryObj[categoryId - 1],
             });
             setContent(content);
         });
@@ -36,15 +35,24 @@ function Update(props) {
         if (currentStep === 0) {
             firstStep.current.validateFields().then(res => {
                 // console.log(res);
-                axios.get(`categories?title=${res.categoryId}`).then(e => {
-                    res.categoryId = e.data[0].id;
-                    // console.log(typeof res.id)
-                    setFormInfo(res);
-                });
+                console.log(res.categoryId);
+                let categoryId = res.categoryId;
+                if (typeof categoryId === "string") {
+                    axios.get(`/categories?title=${categoryId}`).then(e => {
+                        categoryId = e.data[0].id;
+                        // console.log(e.data[0].id);
+                        // console.log(categoryId);
+                        // console.log(typeof res.id)
+                    });
+                } else {
+                    categoryId = res.categoryId.id;
+                }
+                // console.log(categoryId);
+                setFormInfo({title: res.title, categoryId: categoryId});
                 setCurrentStep(currentStep + 1);
                 // console.log(formInfo);
             }).catch(err => {
-                // console.log(err);
+                console.log(err);
             });
         } else if (currentStep === 1) {
             if (content === "" || content.trim() === "<p></p>") {
@@ -110,7 +118,7 @@ function Update(props) {
     return (
         <div>
             <PageHeader title={"更新新闻"} subTitle="新闻更新" onBack={() => props.history.goBack()}/>
-            <Steps current={currentStep}>
+            <Steps current={currentStep} style={{padding: "0 24px", marginTop: "1rem"}}>
                 <Steps.Step title={"基本信息"} description={"新闻标题，新闻分类"}/>
                 <Steps.Step title={"新闻内容"} description={"新闻主体内容"}/>
                 <Steps.Step title={"新闻提交"} description={"保存草稿或者提交审核"}/>

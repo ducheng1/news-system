@@ -106,7 +106,7 @@ function Add(props) {
     return (
         <div>
             <PageHeader title={"撰写新闻"} subTitle="输入您的内容"/>
-            <Steps current={currentStep}>
+            <Steps current={currentStep} style={{padding: "0 24px", marginTop: "1rem"}}>
                 <Steps.Step title={"基本信息"} description={"新闻标题，新闻分类"}/>
                 <Steps.Step title={"新闻内容"} description={"新闻主体内容"}/>
                 <Steps.Step title={"新闻提交"} description={"保存草稿或者提交审核"}/>
